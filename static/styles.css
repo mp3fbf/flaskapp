@@ -148,6 +148,20 @@ th {
     margin-bottom: 0.5rem;
 }
 
+/* Alert Messages */
+.flash-messages {
+    margin-bottom: 2rem;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    background-color: var(--error-color);
+    color: white;
+    font-weight: 500;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .dashboard-container {
