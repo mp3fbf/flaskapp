@@ -9,6 +9,7 @@
 - ✅ Gráficos de distribuição de gastos
 - ✅ Tema claro/escuro
 - ✅ Interface responsiva com HTMX
+- ✅ Edição inline com HTMX
 
 ### Próximas Features Planejadas
 
@@ -28,7 +29,7 @@
 - 🔲 Sistema de logs para monitoramento
 
 #### 4. Experiência do Usuário
-- 🔲 Edição inline com HTMX
+- ✅ Edição inline com HTMX
 - 🔲 Confirmação de exclusão via modal
 - 🔲 Exportação para CSV/PDF
 
