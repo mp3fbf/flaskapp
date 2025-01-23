@@ -288,6 +288,29 @@ def delete_subscription(id):
         db.session.rollback()
     return redirect(url_for('dashboard'))
 
+@app.route('/edit/<int:sub_id>/<field>', methods=['GET', 'POST'])
+@login_required
+def edit_field(sub_id, field):
+    sub = Subscription.query.filter_by(id=sub_id, user_id=current_user.id).first_or_404()
+    
+    if request.method == 'POST':
+        try:
+            value = request.form.get(field)
+            if field == 'next_payment':
+                setattr(sub, field, value)
+            elif field == 'amount':
+                setattr(sub, field, float(value))
+            else:
+                setattr(sub, field, value)
+            
+            db.session.commit()
+            return render_template('partials/table_row.html', sub=sub, form=SubscriptionForm())
+        except Exception as e:
+            print(f"Erro ao atualizar {field}: {e}")
+            return "Erro ao atualizar o campo", 400
+    
+    return render_template('partials/edit_field.html', sub=sub, field=field)
+
 @app.errorhandler(429)
 def ratelimit_handler(e):
     flash("Muitas tentativas. Por favor, aguarde alguns minutos.", "error")
