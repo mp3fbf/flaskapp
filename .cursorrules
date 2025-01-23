@@ -48,6 +48,10 @@
             "description": "Testar manualmente a funcionalidade implementada"
           },
           {
+            "name": "changelog",
+            "description": "Atualizar CHANGELOG.md com a nova feature ou melhoria"
+          },
+          {
             "name": "commit",
             "description": "Fazer commit com mensagem descritiva (feat: descrição da feature)"
           },
