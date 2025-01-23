@@ -381,47 +381,62 @@ th {
     margin-right: 0;
 }
 
-/* Estilos para edição inline */
-.inline-edit {
-    margin: 0;
-    padding: 0;
-}
-
-.inline-input {
+/* Estilos do Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 0.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    background: var(--bg-color);
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal h3 {
+    margin-bottom: 1rem;
     color: var(--text-color);
-    font-size: 1rem;
-    font-family: inherit;
 }
 
-.inline-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+.modal p {
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
 }
 
-td[hx-get] {
-    cursor: pointer;
+.modal-details {
+    padding: 1rem;
+    background-color: var(--background-color);
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
 }
 
-td[hx-get]:hover {
-    background-color: var(--hover-color);
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
 }
 
-/* Dica visual para edição */
-td[hx-get]::after {
-    content: '✎';
-    opacity: 0;
-    margin-left: 0.5rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    transition: opacity 0.2s;
-}
-
-td[hx-get]:hover::after {
-    opacity: 1;
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 } 

@@ -1,0 +1,22 @@
+<div id="delete-modal-{{ sub.id }}" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Confirmar Exclusão</h3>
+        <p>Tem certeza que deseja excluir a assinatura <strong>{{ sub.name }}</strong>?</p>
+        <p class="modal-details">
+            Valor mensal: R$ {{ "%.2f"|format(sub.monthly_cost) }}<br>
+            Próximo pagamento: {{ sub.next_payment }}
+        </p>
+        <div class="modal-actions">
+            <form hx-post="{{ url_for('delete_subscription', id=sub.id) }}" 
+                  hx-target="#subscriptions"
+                  class="inline-form">
+                {{ form.csrf_token }}
+                <button type="submit" class="btn btn-danger">Excluir</button>
+            </form>
+            <button class="btn btn-secondary" 
+                    onclick="document.getElementById('delete-modal-{{ sub.id }}').style.display='none'">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div> 
