@@ -1,13 +1,37 @@
+/* Theme Variables */
 :root {
+    /* Light Theme (default) */
     --primary-color: #2563eb;
     --secondary-color: #64748b;
     --background-color: #f8fafc;
+    --surface-color: #ffffff;
     --text-color: #1e293b;
     --border-color: #e2e8f0;
     --error-color: #ef4444;
     --success-color: #22c55e;
+    --hover-color: #1d4ed8;
+    --table-header-bg: #f8fafc;
+    --table-border: #e2e8f0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 
+/* Dark Theme */
+[data-theme="dark"] {
+    --primary-color: #3b82f6;
+    --secondary-color: #94a3b8;
+    --background-color: #0f172a;
+    --surface-color: #1e293b;
+    --text-color: #f1f5f9;
+    --border-color: #334155;
+    --error-color: #ef4444;
+    --success-color: #22c55e;
+    --hover-color: #60a5fa;
+    --table-header-bg: #1e293b;
+    --table-border: #334155;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -19,6 +43,31 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     line-height: 1.5;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.75rem;
+    border-radius: 50%;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+}
+
+.theme-toggle svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--text-color);
 }
 
 /* Container Styles */
@@ -28,9 +77,9 @@ body {
     max-width: 1200px;
     margin: 2rem auto;
     padding: 2rem;
-    background: white;
+    background: var(--surface-color);
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px var(--shadow-color);
 }
 
 .login-container {
@@ -60,9 +109,12 @@ input,
 select {
     width: 100%;
     padding: 0.75rem;
+    background-color: var(--surface-color);
+    color: var(--text-color);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 input:focus,
@@ -84,11 +136,12 @@ select:focus {
     font-weight: 500;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #1d4ed8;
+    background-color: var(--hover-color);
+    transform: translateY(-1px);
 }
 
 .btn-secondary {
@@ -96,7 +149,7 @@ select:focus {
 }
 
 .btn-secondary:hover {
-    background-color: #475569;
+    background-color: var(--hover-color);
 }
 
 .button-group {
@@ -110,17 +163,18 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin: 2rem 0;
+    background-color: var(--surface-color);
 }
 
 th,
 td {
     padding: 1rem;
     text-align: left;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--table-border);
 }
 
 th {
-    background-color: #f8fafc;
+    background-color: var(--table-header-bg);
     font-weight: 600;
 }
 
@@ -139,7 +193,7 @@ th {
 .totals {
     margin-top: 2rem;
     padding: 1rem;
-    background-color: #f8fafc;
+    background-color: var(--table-header-bg);
     border-radius: 4px;
 }
 
@@ -177,5 +231,10 @@ th {
     table {
         display: block;
         overflow-x: auto;
+    }
+
+    .theme-toggle {
+        bottom: 1rem;
+        right: 1rem;
     }
 } 

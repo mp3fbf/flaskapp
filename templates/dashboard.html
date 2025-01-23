@@ -4,6 +4,7 @@
     <title>Dashboard - Gerenciador de Assinaturas</title>
     <script src="https://unpkg.com/htmx.org"></script>
     <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/js/theme.js"></script>
 </head>
 <body>
     <div class="dashboard-container">
@@ -64,5 +65,11 @@
             {% endif %}
         </div>
     </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Alternar tema">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none">
+            <path d="M12 19a7 7 0 1 0 0-14 7 7 0 0 0 0 14z M12 22.5v-1.5 M12 3v-1.5 M18.5 18.5l1 1 M4.5 4.5l1 1 M21 12h1.5 M1.5 12H3 M18.5 5.5l1-1 M4.5 19.5l1-1"/>
+        </svg>
+    </button>
 </body>
 </html> 
