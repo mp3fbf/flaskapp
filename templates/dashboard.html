@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Gerenciador de Assinaturas</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <h1>Suas Assinaturas</h1>
+            <nav>
+                <a href="{{ url_for('add_subscription') }}" class="btn">Nova Assinatura</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary">Sair</a>
+            </nav>
+        </header>
+
+        <div id="subscriptions">
+            {% if subscriptions %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Valor Mensal (BRL)</th>
+                        <th>Moeda Original</th>
+                        <th>Próximo Pagamento</th>
+                        <th>Periodicidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sub in subscriptions %}
+                    <tr>
+                        <td>{{ sub.name }}</td>
+                        <td>R$ {{ "%.2f"|format(sub.monthly_cost) }}</td>
+                        <td>{{ sub.currency }} {{ "%.2f"|format(sub.amount) }}</td>
+                        <td>{{ sub.next_payment }}</td>
+                        <td>{{ sub.recurrence }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="totals">
+                <h3>Total Mensal: R$ {{ "%.2f"|format(total_mensal) }}</h3>
+                <h3>Total Anual: R$ {{ "%.2f"|format(total_mensal * 12) }}</h3>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <p>Você ainda não tem assinaturas cadastradas.</p>
+                <a href="{{ url_for('add_subscription') }}" class="btn">Adicionar Primeira Assinatura</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html> 

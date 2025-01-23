@@ -1,0 +1,94 @@
+{
+    "version": 1,
+    "rules": [
+      {
+        "type": "ignore",
+        "patterns": [
+          "**/venv/**",
+          "**/__pycache__/**",
+          "**/.git/**",
+          "**/node_modules/**",
+          "**/.env/**",
+          "**/temp/**"
+        ]
+      },
+      {
+        "type": "context",
+        "patterns": [
+          "app.py",
+          "models/**/*.py",
+          "templates/**/*.html",
+          "static/**/*.css",
+          "utils/*.py"
+        ],
+        "weight": 2.0
+      },
+      {
+        "type": "ai",
+        "settings": {
+          "defaultModel": "sonnet",
+          "temperature": 0.3,
+          "maxTokens": 2048,
+          "preferOpenAI": false
+        }
+      },
+      {
+        "type": "hint",
+        "text": "Este projeto usa Flask + SQLite + HTMX. Mantenha o código Python simples e evite dependências externas desnecessárias."
+      },
+      {
+        "type": "workflow",
+        "steps": [
+          {
+            "name": "implementacao",
+            "description": "Implementar nova feature em uma branch específica"
+          },
+          {
+            "name": "testes",
+            "description": "Testar manualmente a funcionalidade implementada"
+          },
+          {
+            "name": "commit",
+            "description": "Fazer commit com mensagem descritiva (feat: descrição da feature)"
+          },
+          {
+            "name": "push",
+            "description": "Push para o repositório remoto"
+          },
+          {
+            "name": "nova-branch",
+            "description": "Criar nova branch para próxima feature (git checkout -b feature/nome-da-feature)"
+          }
+        ]
+      },
+      {
+        "type": "security",
+        "blockPatterns": [
+          "**/.env",
+          "**/config.py"
+        ]
+      }
+    ],
+    "editor": {
+      "autoFormatOnSave": true,
+      "python": {
+        "linting": {
+          "enabled": true,
+          "flake8": true
+        },
+        "formatter": "black"
+      }
+    },
+    "chat": {
+      "defaultPrompts": [
+        {
+          "name": "Flask Route",
+          "prompt": "Como criar uma nova rota em Flask para processar uploads de documentos com HTMX?"
+        },
+        {
+          "name": "HTMX Integration",
+          "prompt": "Como atualizar dinamicamente a lista de assinaturas sem recarregar a página usando HTMX?"
+        }
+      ]
+    }
+  }
