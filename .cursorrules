@@ -19,7 +19,8 @@
           "models/**/*.py",
           "templates/**/*.html",
           "static/**/*.css",
-          "utils/*.py"
+          "utils/*.py",
+          "CHANGELOG.md"
         ],
         "weight": 2.0
       },
@@ -34,11 +35,15 @@
       },
       {
         "type": "hint",
-        "text": "Este projeto usa Flask + SQLite + HTMX. Mantenha o código Python simples e evite dependências externas desnecessárias."
+        "text": "Este projeto usa Flask + SQLite + HTMX. Mantenha o código Python simples e evite dependências externas desnecessárias. Consulte CHANGELOG.md para ver as próximas features planejadas antes de começar uma nova implementação."
       },
       {
         "type": "workflow",
         "steps": [
+          {
+            "name": "feature-check",
+            "description": "Verificar CHANGELOG.md para escolher próxima feature a implementar"
+          },
           {
             "name": "implementacao",
             "description": "Implementar nova feature na branch atual"
