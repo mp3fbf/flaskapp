@@ -5,4 +5,7 @@ openai==1.12.0
 python-dotenv==1.0.1
 cryptography==42.0.2
 apscheduler==3.10.4
-requests==2.31.0 
+requests==2.31.0
+flask-wtf==1.2.1
+email-validator==2.1.0.post1
+flask-limiter==3.5.0 

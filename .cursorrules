@@ -41,7 +41,7 @@
         "steps": [
           {
             "name": "implementacao",
-            "description": "Implementar nova feature em uma branch específica"
+            "description": "Implementar nova feature na branch atual"
           },
           {
             "name": "testes",
@@ -53,11 +53,19 @@
           },
           {
             "name": "push",
-            "description": "Push para o repositório remoto"
+            "description": "Push da branch atual (git push origin feature-branch)"
+          },
+          {
+            "name": "merge",
+            "description": "Merge na main (git checkout main && git merge feature-branch)"
+          },
+          {
+            "name": "cleanup",
+            "description": "Deletar branch após merge (git branch -d feature-branch)"
           },
           {
             "name": "nova-branch",
-            "description": "Criar nova branch para próxima feature (git checkout -b feature/nome-da-feature)"
+            "description": "Criar nova branch a partir da main (git checkout -b feature/nome-da-feature)"
           }
         ]
       },

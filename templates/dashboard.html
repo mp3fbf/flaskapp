@@ -3,6 +3,7 @@
 <head>
     <title>Dashboard - Gerenciador de Assinaturas</title>
     <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/static/styles.css">
     <script src="/static/js/theme.js"></script>
 </head>
@@ -26,6 +27,24 @@
             {% endif %}
         {% endwith %}
 
+        <!-- Seção de Gráficos -->
+        {% if subscriptions %}
+        <div class="charts-section">
+            <div class="chart-container">
+                <h2>Distribuição por Moeda</h2>
+                <canvas id="currencyChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Gastos por Assinatura</h2>
+                <canvas id="subscriptionChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h2>Projeção de Gastos</h2>
+                <canvas id="projectionChart"></canvas>
+            </div>
+        </div>
+        {% endif %}
+
         <div id="subscriptions">
             {% if subscriptions %}
             <table>
@@ -37,6 +56,7 @@
                         <th>Valor Mensal (BRL)</th>
                         <th>Próximo Pagamento</th>
                         <th>Periodicidade</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,7 +67,28 @@
                         <td>R$ {{ "%.2f"|format(sub.amount_brl) }}</td>
                         <td>R$ {{ "%.2f"|format(sub.monthly_cost) }}</td>
                         <td>{{ sub.next_payment }}</td>
-                        <td>{{ sub.recurrence }}</td>
+                        <td>{{ sub.recurrence_label }}</td>
+                        <td>
+                            <div class="subscription-actions">
+                                <a href="{{ url_for('edit_subscription', id=sub.id) }}" class="btn btn-secondary btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                </a>
+                                <form method="POST" action="{{ url_for('delete_subscription', id=sub.id) }}" class="inline-form" 
+                                      onsubmit="return confirm('Tem certeza que deseja excluir esta assinatura?');">
+                                    {{ form.csrf_token }}
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M3 6h18"></path>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -71,5 +112,168 @@
             <path d="M12 19a7 7 0 1 0 0-14 7 7 0 0 0 0 14z M12 22.5v-1.5 M12 3v-1.5 M18.5 18.5l1 1 M4.5 4.5l1 1 M21 12h1.5 M1.5 12H3 M18.5 5.5l1-1 M4.5 19.5l1-1"/>
         </svg>
     </button>
+
+    {% if subscriptions %}
+    <script>
+        // Dados para os gráficos
+        const subscriptionData = JSON.parse('{{ subscription_data|tojson|safe }}');
+        
+        // Configuração de cores que funcionam bem em light/dark mode
+        const chartColors = [
+            'rgba(59, 130, 246, 0.8)',   // Azul
+            'rgba(16, 185, 129, 0.8)',   // Verde
+            'rgba(239, 68, 68, 0.8)',    // Vermelho
+            'rgba(245, 158, 11, 0.8)',   // Amarelo
+            'rgba(139, 92, 246, 0.8)',   // Roxo
+        ];
+
+        // Configurações comuns para todos os gráficos
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        color: getComputedStyle(document.documentElement).getPropertyValue('--text-color')
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            let value = context.raw;
+                            return `${label}: R$ ${value.toFixed(2)}`;
+                        }
+                    }
+                }
+            }
+        };
+
+        // Gráfico de distribuição por moeda
+        const currencyCtx = document.getElementById('currencyChart').getContext('2d');
+        new Chart(currencyCtx, {
+            type: 'doughnut',
+            data: {
+                labels: subscriptionData.currency_distribution.labels,
+                datasets: [{
+                    data: subscriptionData.currency_distribution.values,
+                    backgroundColor: chartColors
+                }]
+            },
+            options: commonOptions
+        });
+
+        // Gráfico de gastos por assinatura
+        const subscriptionCtx = document.getElementById('subscriptionChart').getContext('2d');
+        new Chart(subscriptionCtx, {
+            type: 'bar',
+            data: {
+                labels: subscriptionData.subscription_costs.labels,
+                datasets: [{
+                    label: 'Valor Mensal (BRL)',
+                    data: subscriptionData.subscription_costs.values,
+                    backgroundColor: chartColors[0]
+                }]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: getComputedStyle(document.documentElement).getPropertyValue('--border-color')
+                        },
+                        ticks: {
+                            color: getComputedStyle(document.documentElement).getPropertyValue('--text-color'),
+                            callback: function(value) {
+                                return 'R$ ' + value.toFixed(2);
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: getComputedStyle(document.documentElement).getPropertyValue('--text-color')
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfico de projeção de gastos
+        const projectionCtx = document.getElementById('projectionChart').getContext('2d');
+        new Chart(projectionCtx, {
+            type: 'line',
+            data: {
+                labels: subscriptionData.projection.labels,
+                datasets: [{
+                    label: 'Projeção de Gastos (BRL)',
+                    data: subscriptionData.projection.values,
+                    borderColor: chartColors[0],
+                    tension: 0.3,
+                    fill: true,
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)'
+                }]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: getComputedStyle(document.documentElement).getPropertyValue('--border-color')
+                        },
+                        ticks: {
+                            color: getComputedStyle(document.documentElement).getPropertyValue('--text-color'),
+                            callback: function(value) {
+                                return 'R$ ' + value.toFixed(2);
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: getComputedStyle(document.documentElement).getPropertyValue('--text-color')
+                        }
+                    }
+                }
+            }
+        });
+
+        // Atualiza as cores dos gráficos quando o tema muda
+        document.addEventListener('themeChanged', function() {
+            const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color');
+            const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--border-color');
+            
+            Chart.instances.forEach(chart => {
+                // Atualiza cores do texto
+                if (chart.options.plugins.legend) {
+                    chart.options.plugins.legend.labels.color = textColor;
+                }
+                if (chart.options.plugins.title) {
+                    chart.options.plugins.title.color = textColor;
+                }
+                
+                // Atualiza cores das escalas
+                if (chart.options.scales) {
+                    ['x', 'y'].forEach(axis => {
+                        if (chart.options.scales[axis]) {
+                            chart.options.scales[axis].grid.color = borderColor;
+                            chart.options.scales[axis].ticks.color = textColor;
+                        }
+                    });
+                }
+                
+                chart.update();
+            });
+        });
+    </script>
+    {% endif %}
 </body>
 </html> 

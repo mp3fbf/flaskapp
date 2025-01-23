@@ -8,6 +8,9 @@ function toggleTheme() {
     
     // Atualiza o ícone
     updateThemeIcon(newTheme);
+    
+    // Dispara evento de mudança de tema
+    document.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
 }
 
 // Função para atualizar o ícone do tema
@@ -26,6 +29,9 @@ function initTheme() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateThemeIcon(savedTheme);
+    
+    // Dispara evento inicial de tema
+    document.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: savedTheme } }));
 }
 
 // Inicializa o tema quando o DOM estiver carregado

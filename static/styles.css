@@ -9,26 +9,32 @@
     --border-color: #e2e8f0;
     --error-color: #ef4444;
     --success-color: #22c55e;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
     --hover-color: #1d4ed8;
     --table-header-bg: #f8fafc;
     --table-border: #e2e8f0;
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --secondary-hover-color: #4b5563;
 }
 
 /* Dark Theme */
 [data-theme="dark"] {
     --primary-color: #3b82f6;
-    --secondary-color: #94a3b8;
+    --secondary-color: #4b5563;
     --background-color: #0f172a;
     --surface-color: #1e293b;
     --text-color: #f1f5f9;
     --border-color: #334155;
     --error-color: #ef4444;
     --success-color: #22c55e;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
     --hover-color: #60a5fa;
     --table-header-bg: #1e293b;
     --table-border: #334155;
     --shadow-color: rgba(0, 0, 0, 0.3);
+    --secondary-hover-color: #374151;
 }
 
 /* Base Styles */
@@ -44,6 +50,29 @@ body {
     color: var(--text-color);
     line-height: 1.5;
     transition: background-color 0.3s, color 0.3s;
+}
+
+/* Charts Section */
+.charts-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.chart-container {
+    background: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px var(--shadow-color);
+    height: 300px;
+}
+
+.chart-container h2 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: var(--text-color);
+    text-align: center;
 }
 
 /* Theme Toggle */
@@ -124,6 +153,24 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
+/* Error Messages */
+.error-message {
+    display: block;
+    color: var(--error-color);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+input.error,
+select.error {
+    border-color: var(--error-color);
+}
+
+input.error:focus,
+select.error:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
 /* Button Styles */
 .btn {
     display: inline-block;
@@ -146,16 +193,26 @@ select:focus {
 
 .btn-secondary {
     background-color: var(--secondary-color);
+    color: var(--text-color);
 }
 
 .btn-secondary:hover {
-    background-color: var(--hover-color);
+    background-color: var(--secondary-hover-color);
+}
+
+.btn-danger {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
 }
 
 .button-group {
     display: flex;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
 }
 
 /* Table Styles */
@@ -211,9 +268,39 @@ th {
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 4px;
+    font-weight: 500;
+    animation: slideIn 0.3s ease;
+}
+
+.alert-error {
     background-color: var(--error-color);
     color: white;
-    font-weight: 500;
+}
+
+.alert-success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.alert-warning {
+    background-color: var(--warning-color);
+    color: white;
+}
+
+.alert-info {
+    background-color: var(--info-color);
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-1rem);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* Responsive Design */
@@ -237,4 +324,59 @@ th {
         bottom: 1rem;
         right: 1rem;
     }
+
+    .charts-section {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-container {
+        height: 250px;
+    }
+}
+
+/* Botões de ação */
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-hover-color);
+}
+
+.btn-danger {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626;
+}
+
+.subscription-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.inline-form {
+    display: inline-block;
+    margin: 0;
+}
+
+/* Ícones SVG */
+.btn svg {
+    vertical-align: middle;
+    margin-right: 0.25rem;
+}
+
+.btn-sm svg {
+    margin-right: 0;
 } 
